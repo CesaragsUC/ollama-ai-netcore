@@ -1,0 +1,75 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h2>New Chat</h2>
+    <p>Start a new conversation with Ollama AI</p>
+  </div>
+
+  <div class="chat-messages" #chatMessages>
+    <div class="message" [ngClass]="m.role === 'ai' ? 'ai-message' : 'user-message'"
+      *ngFor="let m of messages; trackBy: trackById">
+
+      <div class="message-avatar">{{ m.role === 'ai' ? '🤖' : '🙂' }}</div>
+
+      <div class="message-content">
+        <!-- mensagens da IA -->
+        <ng-container *ngIf="m.role === 'ai'; else userMsg">
+          <!-- enquanto anima -->
+          <p *ngIf="m.animate">
+            <ng-container *ngIf="m.content?.length; else typingDots">
+              {{ m.content }}<span class="cursor" aria-hidden="true">▋</span>
+            </ng-container>
+            <!-- indicador enquanto ainda não chegou nada -->
+            <ng-template #typingDots>
+              <span class="typing" aria-label="Digitando…">
+                <span></span><span></span><span></span>
+              </span>
+            </ng-template>
+          </p>
+
+          <!-- quando terminou -->
+          <p *ngIf="!m.animate">{{ m.content }}</p>
+        </ng-container>
+
+        <!-- mensagem do usuário -->
+        <ng-template #userMsg>
+          <p>{{ m.content }}</p>
+        </ng-template>
+      </div>
+
+
+
+    </div>
+  </div>
+
+  <div class="chat-input-container">
+    <div class="input-wrapper">
+      <textarea [(ngModel)]="promptMessage" (keydown.enter)="sendStreamPrompt($event)"
+        placeholder="Type your message here..." class="chat-input" rows="3">
+    </textarea>
+
+      <input id="attach-input" type="file" multiple (change)="onFilesSelected($event)" accept=".pdf,image/*"
+        class="file-input" />
+
+      <label for="attach-input" class="attach-button" title="Anexar arquivos">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </label>
+
+      <button (click)="sendStreamPrompt()" class="send-button"
+        [disabled]="!promptMessage.trim() && !selectedFiles.length">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- CHIPS ABAIXO DO INPUT -->
+    <div class="attachments-bar" *ngIf="selectedFiles.length">
+      <span class="chip" *ngFor="let f of selectedFiles; let i = index">
+        {{ f.name }}
+        <button type="button" class="chip-remove" (click)="removeFile(i)" aria-label="Remover anexo">×</button>
+      </span>
+    </div>
+  </div>
