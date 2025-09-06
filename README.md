@@ -1,5 +1,8 @@
 #  ✨ Ollama AI PoC — .NET 9 (API) + Angular (Web)
 
+
+<img width="800" height="600" alt="front" src="https://github.com/user-attachments/assets/8136ccde-1379-4ca0-a815-d74cfe426752" />
+
 ## PoC de chat com IA local usando Ollama
  com dois modelos:
 
@@ -82,4 +85,16 @@ ollama run phi3:3.8b
 # remover um modelo
 ollama rm phi3:3.8b
 
+````
+
+## Backend Project
+````
+dotnet restore
+dotnet run
+````
+
+## Front Project
+````
+npm install
+ng serve -o
 ````
