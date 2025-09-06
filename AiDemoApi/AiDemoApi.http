@@ -1,0 +1,6 @@
+@AiDemoApi_HostAddress = http://localhost:5186
+
+GET {{AiDemoApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
