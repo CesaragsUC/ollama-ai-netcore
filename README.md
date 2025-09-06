@@ -1,4 +1,4 @@
-#  ✨ Ollama AI PoC — .NET 9 (API) + Angular (Web)
+#  ✨ Ollama AI PoC — .NET 9 (API) + Angular v18+ 
 
 
 <img width="800" height="600" alt="front" src="https://github.com/user-attachments/assets/8136ccde-1379-4ca0-a815-d74cfe426752" />
