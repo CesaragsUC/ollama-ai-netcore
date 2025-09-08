@@ -1,7 +1,8 @@
 #  ✨ Ollama AI PoC — .NET 9 (API) + Angular v18+ 
 
+![screem demo](https://github.com/user-attachments/assets/b2ba1a17-0a78-45e7-ae9d-d48928596bd5)
 
-<img width="800" height="600" alt="front" src="https://github.com/user-attachments/assets/8136ccde-1379-4ca0-a815-d74cfe426752" />
+
 
 ## PoC de chat com IA local usando Ollama
  com dois modelos:
