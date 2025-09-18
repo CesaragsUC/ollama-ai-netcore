@@ -4,66 +4,64 @@
 
 
 
-## PoC de chat com IA local usando Ollama
- com dois modelos:
+## PoC for local AI chat using Ollama  
+with two models:
 
-**phi3** → usado para texto/arquivos (ex.: PDF → texto).
-https://ollama.com/library/phi3
+**phi3** → used for text/files (e.g.: PDF → text).  
+https://ollama.com/library/phi3  
 
-**llama3.2-vision** → usado para imagens (multimodal).
-https://ollama.com/library/llama3.2-vision
+**llama3.2-vision** → used for images (multimodal).  
+https://ollama.com/library/llama3.2-vision  
 
-O frontend consome respostas via streaming (.NET API) para mostrar a saída token a token com efeito de digitação.
+The frontend consumes responses via streaming (.NET API) to display the output token by token with a typing effect.  
 
 🛠️ Configuration:
 ```
+#1 Install Ollama
+Here: https://ollama.com/
 
-#1 Instale o Ollama
-Aqui: https://ollama.com/
-
-#2 Baixe os modelos
+#2 Download the models
 ollama pull phi3:3.8b
 ollama pull llama3.2-vision:11b-instruct-q4_K_M
 ```
-### 🔍 Como se Ollama esta rodando:
+### 🔍 How to check if Ollama is running:
 - http://localhost:11434/
 <img width="375" height="164" alt="image" src="https://github.com/user-attachments/assets/d90607ff-0331-4a99-a64d-e564a06648dc" />
 
-### 📌 Parametros do modelo llama3.2-vision:
+### 📌 llama3.2-vision model parameters:
 
-- **`q4_K_M`**  -> É o tipo de quantização do modelo (formato GGUF do llama.cpp).
-- **`11b`** -> ~11 bilhões de parâmetros
-- **`instruct`**  → afinado para seguir instruções
-- **`q4_K_M `**  → K-quant 4-bit, variante “M” (medium)
+- **`q4_K_M`**  -> Type of quantization of the model (GGUF format from llama.cpp).
+- **`11b`** -> ~11 billion parameters
+- **`instruct`**  → fine-tuned to follow instructions
+- **`q4_K_M`**  → K-quant 4-bit, “M” variant (medium)
 
-### 🔎 O que isso significa na prática:
+### 🔎 What this means in practice:
 
-- q4 em média ~4 bits por peso (bem comprimido).
-- Menos RAM/VRAM usada e geração mais rápida.
-- Qualidade um pouco abaixo de quantizações menos agressivas (q5/q6/q8).
-- K → “K-quants”, uma família de quantizações mais modernas do llama.cpp (melhor relação qualidade×memória que as antigas q4_0/q4_1).
-- M → “Medium”: perfil equilibrado de qualidade vs. uso de memória.
-- q4_K_S (Small) usa um pouco menos de memória, perde mais qualidade.
-- q4_K_M é o equilíbrio recomendado em 4-bit.
-- Se quiser mais fidelidade (e tiver memória), use q5_K_M / q6_K / q8_0.
+- q4 averages ~4 bits per weight (highly compressed).
+- Less RAM/VRAM usage and faster generation.
+- Slightly lower quality than less aggressive quantizations (q5/q6/q8).
+- K → “K-quants”, a newer family of quantizations in llama.cpp (better quality×memory tradeoff than the older q4_0/q4_1).
+- M → “Medium”: balanced profile between quality and memory usage.
+- q4_K_S (Small) uses a little less memory, loses more quality.
+- q4_K_M is the recommended balance in 4-bit.
+- If you want more fidelity (and have memory), use q5_K_M / q6_K / q8_0.
 
-### 🔧 Como usar outras quantizações no Ollama:
+### 🔧 How to use other quantizations in Ollama:
 ````
-# baixar outra quantização
+# download another quantization
 ollama pull llama3.2-vision:11b-instruct-q5_K_M
 
-# rodar especificando a tag desejada
+# run specifying the desired tag
 ollama run llama3.2-vision:11b-instruct-q5_K_M
-
 ````
 
-## Arquitetura:
+## Architecture:
 
 ```
 Angular (UI + API)
-  ├── POST /api/chat/send-stream          → texto  (usa phi3)
-  └── POST /api/chat/send-stream-files    → arquivos/imagens
-                                           • PDF → texto → phi3
+  ├── POST /api/chat/send-stream          → text  (uses phi3)
+  └── POST /api/chat/send-stream-files    → files/images
+                                           • PDF → text → phi3
                                            • image/* → llama3.2-vision
 
 Ollama (localhost:11434)
@@ -71,21 +69,20 @@ Ollama (localhost:11434)
   └── llama3.2-vision:11b-instruct-q4_K_M
 ```
 
-## Comandos úteis (Ollama)
+## Useful commands (Ollama)
 
 ````
-# listar modelos instalados
+# list installed models
 ollama list
 
-# detalhes de um modelo
+# model details
 ollama show llama3.2-vision:11b-instruct-q4_K_M
 
-# rodar um modelo manualmente (teste rápido)
+# run a model manually (quick test)
 ollama run phi3:3.8b
 
-# remover um modelo
+# remove a model
 ollama rm phi3:3.8b
-
 ````
 
 ## Backend Project
